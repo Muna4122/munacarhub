@@ -13,7 +13,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition">
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold">
-            🚗
+            
           </div>
           <span className="font-extrabold text-xl uppercase text-slate-900 hidden sm:inline">
             Muna CarHub

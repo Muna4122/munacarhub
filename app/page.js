@@ -84,12 +84,12 @@ export default function Home() {
                 className="group bg-white border-2 border-slate-200 rounded-2xl p-4 sm:p-6 text-center hover:border-blue-500 hover:bg-blue-50 transition-all duration-300 transform hover:scale-105 cursor-pointer"
               >
                 <div className="text-2xl sm:text-3xl mb-2">
-                  {item === "Luxury" && "👑"}
-                  {item === "Electric" && "⚡"}
-                  {item === "Sports" && "🏎️"}
-                  {item === "SUV" && "🚙"}
-                  {item === "Sedan" && "🚗"}
-                  {item === "Truck" && "🚚"}
+                  {item === "Luxury" && ""}
+                  {item === "Electric" && ""}
+                  {item === "Sports" && ""}
+                  {item === "SUV" && ""}
+                  {item === "Sedan" && ""}
+                  {item === "Truck" && ""}
                 </div>
                 <p className="font-bold text-slate-900 text-sm sm:text-base group-hover:text-blue-600">{item}</p>
               </button>

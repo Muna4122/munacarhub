@@ -3,8 +3,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { FiUpload, FiMapPin, FiSend, FiX } from "react-icons/fi";
-import { auth } from "@/app/lib/firebase";
+import { auth, db } from "@/app/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 
 export default function SellPage() {
   const router = useRouter();
@@ -35,6 +36,7 @@ export default function SellPage() {
     phone: "",
     contact: "",
   });
+  const [submitMessage, setSubmitMessage] = useState("");
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
@@ -95,10 +97,46 @@ export default function SellPage() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", { ...formData, images });
-    alert("Listing posted successfully!");
+
+    const user = auth.currentUser;
+    if (!user) {
+      router.push("/profile");
+      return;
+    }
+
+    setSubmitMessage("");
+
+    try {
+      const listingsRef = collection(db, "listings");
+      await addDoc(listingsRef, {
+        ...formData,
+        images,
+        ownerId: user.uid,
+        ownerEmail: user.email,
+        createdAt: serverTimestamp(),
+      });
+
+      setSubmitMessage("Listing posted successfully!");
+      setImages([]);
+      setFormData({
+        makeModel: "",
+        year: "",
+        price: "",
+        mileage: "",
+        transmission: "",
+        fuelType: "",
+        condition: "",
+        description: "",
+        location: "Abuja, Nigeria",
+        phone: "",
+        contact: "",
+      });
+    } catch (error) {
+      console.error("Error posting listing:", error);
+      setSubmitMessage("Unable to post listing. Please try again.");
+    }
   };
 
   if (!isAuthenticated) {
@@ -137,6 +175,12 @@ export default function SellPage() {
 
       {/* Content */}
       <main className="flex-1 max-w-4xl mx-auto w-full px-4 sm:px-6 py-6 sm:py-8 space-y-6 sm:space-y-8">
+
+        {submitMessage && (
+          <div className="rounded-2xl bg-green-50 border border-green-200 p-4 text-green-800 text-sm sm:text-base">
+            {submitMessage}
+          </div>
+        )}
 
         {/* Upload Section */}
         <section>
