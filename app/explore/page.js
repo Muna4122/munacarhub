@@ -1,11 +1,13 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { cars } from "../../data/cars";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Explore() {
+export const dynamic = 'force-dynamic';
+
+function ExploreContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const initialSearch = searchParams?.get("search") || "";
@@ -164,5 +166,13 @@ export default function Explore() {
 
       </div>
     </div>
+  );
+}
+
+export default function Explore() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ExploreContent />
+    </Suspense>
   );
 }
